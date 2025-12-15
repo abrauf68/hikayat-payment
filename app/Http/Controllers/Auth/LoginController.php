@@ -16,7 +16,7 @@ class LoginController extends Controller
     public function login()
     {
         if (Auth::check()) {
-            return redirect()->route('dashboard');
+            return redirect()->route('payment-terminal');
         } else {
             return view('auth.login');
         }
@@ -32,13 +32,6 @@ class LoginController extends Controller
             'email_username' => 'required|max:50',
             'password' => 'required',
         ];
-
-        // If captcha is used
-        if (config('captcha.version') !== 'no_captcha') {
-            $rules['g-recaptcha-response'] = 'required|captcha';
-        } else {
-            $rules['g-recaptcha-response'] = 'nullable';
-        }
 
         $validate = Validator::make($request->all(), $rules);
         if ($validate->fails()) {

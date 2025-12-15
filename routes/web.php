@@ -29,32 +29,22 @@ Route::group(['middleware' => ['guest']], function () {
     //User Login Authentication Routes
     Route::get('login', [LoginController::class, 'login'])->name('login');
     Route::post('login-attempt', [LoginController::class, 'login_attempt'])->name('login.attempt');
-
 });
 
 // Authentication Routes
 Route::group(['middleware' => ['auth']], function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
-
 });
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/deactivated', function () {
-        return view('errors.deactivated');
-    })->name('deactivated');
-    Route::middleware(['check.activation'])->group(function () {
-        Route::get('/payment-summary', [PaymentController::class, 'summary'])->name('payment.summary');
-        Route::get('payment-terminal', [PaymentController::class, 'index'])->name('payment-terminal');
-        Route::post('payment/store', [PaymentController::class, 'storePayment'])->name('payment.store');
-        Route::delete('payment/delete/{id}', [PaymentController::class, 'deletePayment'])->name('payment.destroy');
-    });
-
+Route::middleware(['auth'])->group(function () {
+    Route::get('/payment-summary', [PaymentController::class, 'summary'])->name('payment.summary');
+    Route::get('payment-terminal', [PaymentController::class, 'index'])->name('payment-terminal');
+    Route::post('payment/store', [PaymentController::class, 'storePayment'])->name('payment.store');
+    Route::delete('payment/delete/{id}', [PaymentController::class, 'deletePayment'])->name('payment.destroy');
 });
 
 // Frontend Pages Routes
-Route::name('frontend.')->group(function () {
-
-});
+Route::name('frontend.')->group(function () {});
 
 
 //Artisan Routes
@@ -84,4 +74,3 @@ Route::middleware(['auth'])->group(function () {
         return "Optimization cache cleared!";
     })->name('clear.optimize');
 });
-
