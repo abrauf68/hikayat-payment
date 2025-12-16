@@ -70,17 +70,17 @@ class Helper
         $currencySetting = SystemSetting::first();
 
         if (!$currencySetting) {
-            return $amount; // Return the amount as is if settings are not found
+            return number_format($amount); // Return the amount as is if settings are not found
         }
 
         $symbol = $currencySetting->currency_symbol;
         $position = $currencySetting->currency_symbol_position; // 'prefix' or 'postfix'
 
         if ($position === 'prefix') {
-            return $symbol . $amount;
+            return $symbol . ' ' . number_format($amount);
         }
 
-        return $amount . $symbol;
+        return number_format($amount) . ' ' . $symbol;
     }
 
     public static function renderRecaptcha($formId, $action = 'register')

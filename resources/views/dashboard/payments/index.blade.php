@@ -562,6 +562,18 @@
                 border: 1px solid #ddd;
             }
         }
+        
+        .reset-btn {
+            border: none;
+            background: #f3f3f3;
+            padding: 10px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .reset-btn:hover {
+            background: #e2e2e2;
+        }
     </style>
 @endsection
 
@@ -643,39 +655,47 @@
             <div class="summary-section">
                 <h2 class="section-title"><i class="fas fa-chart-pie"></i> Monthly Summary</h2>
 
-                <div class="filters-row" style="display:flex; gap:15px;">
-                    <!-- Month -->
-                    <div class="month-selector">
-                        <label for="monthFilter">
-                            <i class="fas fa-calendar-alt"></i> Select Month
-                        </label>
-                        <select id="monthFilter"></select>
-                    </div>
+                <form action="{{ route('payment-terminal') }}" method="GET" id="filterForm">
+                    <div class="filters-row" style="display:flex; gap:15px; align-items:end;">
 
-                    <!-- Year -->
-                    <div class="month-selector">
-                        <label for="yearFilter">
-                            <i class="fas fa-calendar-alt"></i> Select Year
-                        </label>
-                        <select id="yearFilter"></select>
+                        <!-- Month -->
+                        <div class="month-selector">
+                            <label><i class="fas fa-calendar-alt"></i> Select Month</label>
+                            <select id="monthFilter" name="month"></select>
+                        </div>
+
+                        <!-- Year -->
+                        <div class="month-selector">
+                            <label><i class="fas fa-calendar-alt"></i> Select Year</label>
+                            <select id="yearFilter" name="year"></select>
+                        </div>
+
+                        <!-- Reset -->
+                        <button type="button" id="resetFilters" class="reset-btn" title="Reset Filters">
+                            <i class="fas fa-rotate-left"></i>
+                        </button>
+
                     </div>
-                </div>
+                </form>
+
+
 
                 <div class="monthly-summary">
                     <div class="account-summary hikayat-account">
                         <h3><i class="fas fa-building"></i> Hikayat Account</h3>
-                        <div class="amount" id="hikayatTotal">Rs 0</div>
+                        <div class="amount" id="hikayatTotal">{{ \App\Helpers\Helper::formatCurrency($paymentByHikayat) }}
+                        </div>
                     </div>
 
                     <div class="account-summary self-account">
                         <h3><i class="fas fa-user"></i> Self Account</h3>
-                        <div class="amount" id="selfTotal">Rs 0</div>
+                        <div class="amount" id="selfTotal">{{ \App\Helpers\Helper::formatCurrency($paymentBySelf) }}</div>
                     </div>
                 </div>
 
                 <div class="total-section">
                     <h3><i class="fas fa-calculator"></i> Combined Total</h3>
-                    <div class="amount" id="combinedTotal">Rs 0</div>
+                    <div class="amount" id="combinedTotal">{{ \App\Helpers\Helper::formatCurrency($totalPayment) }}</div>
                 </div>
             </div>
 
@@ -811,60 +831,48 @@
     <script>
         const monthFilter = document.getElementById('monthFilter');
         const yearFilter = document.getElementById('yearFilter');
+        const filterForm = document.getElementById('filterForm');
+        const resetBtn = document.getElementById('resetFilters');
 
         const months = [
             'January', 'February', 'March', 'April', 'May', 'June',
             'July', 'August', 'September', 'October', 'November', 'December'
         ];
 
-        const currentDate = new Date();
-        const currentMonth = currentDate.getMonth() + 1; // 1-12
-        const currentYear = currentDate.getFullYear();
+        const params = new URLSearchParams(window.location.search);
 
-        /* Populate months */
+        const selectedMonth = params.get('month') || '';
+        const selectedYear = params.get('year') || '';
+
+        /* ---- Month ---- */
+        let allMonthOption = new Option('All Months', '');
+        monthFilter.add(allMonthOption);
+
         months.forEach((month, index) => {
-            let option = document.createElement('option');
-            option.value = index + 1;
-            option.text = month;
-            if (option.value == currentMonth) option.selected = true;
-            monthFilter.appendChild(option);
+            let option = new Option(month, index + 1);
+            if (option.value == selectedMonth) option.selected = true;
+            monthFilter.add(option);
         });
 
-        /* Populate years (last 5 + current) */
+        /* ---- Year ---- */
+        let allYearOption = new Option('All Years', '');
+        yearFilter.add(allYearOption);
+
+        const currentYear = new Date().getFullYear();
         for (let y = currentYear - 5; y <= currentYear + 1; y++) {
-            let option = document.createElement('option');
-            option.value = y;
-            option.text = y;
-            if (y === currentYear) option.selected = true;
-            yearFilter.appendChild(option);
+            let option = new Option(y, y);
+            if (y == selectedYear) option.selected = true;
+            yearFilter.add(option);
         }
 
-        function loadSummary() {
-            let month = monthFilter.value;
-            let year = yearFilter.value;
+        /* Auto submit on change */
+        monthFilter.addEventListener('change', () => filterForm.submit());
+        yearFilter.addEventListener('change', () => filterForm.submit());
 
-            $.ajax({
-                url: "{{ route('payment.summary') }}",
-                type: "GET",
-                data: {
-                    month,
-                    year
-                },
-                success: function(res) {
-                    $('#hikayatTotal').text('Rs ' + res.hikayat);
-                    $('#selfTotal').text('Rs ' + res.self);
-                    $('#combinedTotal').text('Rs ' + res.total);
-                }
-            });
-        }
-
-        /* Reload API on change */
-        monthFilter.addEventListener('change', loadSummary);
-        yearFilter.addEventListener('change', loadSummary);
-
-        /* Initial load */
-        loadSummary();
+        /* 🔄 Reset filters */
+        resetBtn.addEventListener('click', () => {
+            window.location.href = "{{ route('payment-terminal') }}";
+        });
     </script>
-
 
 @endsection

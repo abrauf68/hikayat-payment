@@ -14,16 +14,29 @@ class PaymentController extends Controller
     /**
      * Display the payment terminal.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $payments = Payment::latest()->get();
+            $month = $request->month;
+            $year  = $request->year;
+            if ($month && $year) {
+                $payments = Payment::whereMonth('payment_date', $month)
+                    ->whereYear('payment_date', $year)
+                    ->latest()
+                    ->get();
+                $paymentsData = Payment::whereMonth('payment_date', $month)
+                    ->whereYear('payment_date', $year)
+                    ->latest()->get();
+            }else {
+                $payments = Payment::get();
+                $paymentsData = Payment::latest()->get();
+            }
 
-            $paymentBySelf = Payment::where('paid_by', 'self')->sum('product_price');
-            $paymentByHikayat = Payment::where('paid_by', 'hikayat')->sum('product_price');
+            $paymentBySelf = $payments->where('paid_by', 'self')->sum('product_price');
+            $paymentByHikayat = $payments->where('paid_by', 'hikayat')->sum('product_price');
             $totalPayment = $paymentBySelf + $paymentByHikayat;
 
-            return view('dashboard.payments.index', compact('payments'));
+            return view('dashboard.payments.index', compact('payments', 'paymentsData', 'paymentBySelf', 'paymentByHikayat', 'totalPayment'));
         } catch (\Throwable $th) {
             Log::error('Payment Index Failed', ['error' => $th->getMessage()]);
             return redirect()->back()->with('error', "Something went wrong! Please try again later");

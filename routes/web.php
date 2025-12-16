@@ -23,6 +23,9 @@ Auth::routes();
 Route::get('/', function () {
     return redirect()->route('payment-terminal');
 });
+Route::get('/home', function () {
+    return redirect()->route('payment-terminal');
+});
 // Guest Routes
 Route::group(['middleware' => ['guest']], function () {
 
