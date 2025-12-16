@@ -349,6 +349,7 @@
             .month-selector {
                 flex-direction: column;
                 align-items: stretch;
+                width: 100%;
             }
 
             .month-selector label {
@@ -653,10 +654,15 @@
             </div>
 
             <div class="summary-section">
-                <h2 class="section-title"><i class="fas fa-chart-pie"></i> Monthly Summary</h2>
+                <h2 class="section-title"><i class="fas fa-chart-pie"></i> Monthly Summary
+                    <!-- Reset -->
+                    <button type="button" id="resetFilters" class="reset-btn" title="Reset Filters">
+                        <i class="fas fa-rotate-left"></i>
+                    </button>
+                </h2>
 
                 <form action="{{ route('payment-terminal') }}" method="GET" id="filterForm">
-                    <div class="filters-row" style="display:flex; gap:15px; align-items:end;">
+                    <div class="filters-row" style="display:flex; gap:15px; justify-content: center; align-items: center;">
 
                         <!-- Month -->
                         <div class="month-selector">
@@ -669,11 +675,6 @@
                             <label><i class="fas fa-calendar-alt"></i> Select Year</label>
                             <select id="yearFilter" name="year"></select>
                         </div>
-
-                        <!-- Reset -->
-                        <button type="button" id="resetFilters" class="reset-btn" title="Reset Filters">
-                            <i class="fas fa-rotate-left"></i>
-                        </button>
 
                     </div>
                 </form>
