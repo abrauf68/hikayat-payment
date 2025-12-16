@@ -562,7 +562,7 @@
                 border: 1px solid #ddd;
             }
         }
-        
+
         .reset-btn {
             border: none;
             background: #f3f3f3;
@@ -586,10 +586,10 @@
             </div>
 
             <div class="header-right">
-                <div class="profile-wrapper">
+                {{-- <div class="profile-wrapper">
                     <i class="fas fa-user-circle profile-icon"></i>
                     <span class="profile-name">{{ Auth::user()->name }}</span>
-                </div>
+                </div> --}}
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
