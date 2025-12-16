@@ -18,6 +18,7 @@ return new class extends Migration
             $table->enum('paid_by', ['self', 'hikayat'])->default('self');
             $table->dateTime('payment_date');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
