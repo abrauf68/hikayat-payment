@@ -682,6 +682,12 @@
 
             <div class="menu-divider"></div>
 
+            <a href="{{ route('trash') }}" class="menu-item {{ request()->routeIs('trash') ? 'active' : '' }}">
+                <i class="fas fa-trash-alt"></i>
+                <span>Trash</span>
+                <span class="notification-badge">{{ \App\Helpers\Helper::trashCount() }}</span>
+            </a>
+
             <a href="#" class="menu-item">
                 <i class="fas fa-chart-bar"></i>
                 <span>Analytics</span>
@@ -690,7 +696,6 @@
             <a href="#" class="menu-item">
                 <i class="fas fa-file-invoice-dollar"></i>
                 <span>Reports</span>
-                <span class="notification-badge">3</span>
             </a>
         </div>
     </div>

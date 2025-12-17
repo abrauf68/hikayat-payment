@@ -76,6 +76,7 @@ class PurchaseController extends Controller
         $validator = Validator::make($request->all(), [
             'variant_name' => 'required|string|max:255',
             'client_name' => 'required|string|max:255',
+            'quantity' => 'required|integer|min:1',
             'original_price' => 'required|numeric|min:0',
             'discounted_price' => 'required|numeric|min:0',
             'status' => 'required|in:paid,unpaid',
@@ -92,6 +93,7 @@ class PurchaseController extends Controller
             $purchase = new Purchase();
             $purchase->variant_name = $request->variant_name;
             $purchase->client_name = $request->client_name;
+            $purchase->quantity = $request->quantity;
             $purchase->original_price = $request->original_price;
             $purchase->discounted_price = $request->discounted_price;
             $discountPercentage = 0;
@@ -129,6 +131,7 @@ class PurchaseController extends Controller
         $validator = Validator::make($request->all(), [
             'variant_name_edit' => 'required|string|max:255',
             'client_name_edit' => 'required|string|max:255',
+            'quantity_edit' => 'required|integer|min:1',
             'original_price_edit' => 'required|numeric|min:0',
             'discounted_price_edit' => 'required|numeric|min:0',
             'status_edit' => 'required|in:paid,unpaid',
@@ -144,6 +147,7 @@ class PurchaseController extends Controller
             $purchase = Purchase::findOrFail($id);
             $purchase->variant_name = $request->variant_name_edit;
             $purchase->client_name = $request->client_name_edit;
+            $purchase->quantity = $request->quantity_edit;
             $purchase->original_price = $request->original_price_edit;
             $purchase->discounted_price = $request->discounted_price_edit;
             $discountPercentage = 0;
@@ -159,6 +163,32 @@ class PurchaseController extends Controller
             return redirect()->route('purchase-terminal')->with('success', 'Purchase updated successfully.');
         } catch (\Throwable $th) {
             Log::error('Update Purchase Failed', ['error' => $th->getMessage()]);
+            return redirect()->back()->with('error', "Something went wrong! Please try again later");
+        }
+    }
+
+    public function restorePurchase($id)
+    {
+        try {
+            $purchase = Purchase::onlyTrashed()->findOrFail($id);
+            $purchase->restore();
+
+            return redirect()->route('purchase-terminal')->with('success', 'Purchase restored successfully.');
+        } catch (\Throwable $th) {
+            Log::error('Restore Purchase Failed', ['error' => $th->getMessage()]);
+            return redirect()->back()->with('error', "Something went wrong! Please try again later");
+        }
+    }
+
+    public function deletePurchasePermanently($id)
+    {
+        try {
+            $purchase = Purchase::onlyTrashed()->findOrFail($id);
+            $purchase->forceDelete();
+
+            return redirect()->route('trash')->with('success', 'Purchase permanently deleted successfully.');
+        } catch (\Throwable $th) {
+            Log::error('Permanent Delete Purchase Failed', ['error' => $th->getMessage()]);
             return redirect()->back()->with('error', "Something went wrong! Please try again later");
         }
     }

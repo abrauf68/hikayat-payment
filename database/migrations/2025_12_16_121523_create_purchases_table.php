@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('variant_name');
             $table->string('client_name');
+            $table->integer('quantity')->default(1);
             $table->double('original_price', 10, 2)->default(0);
             $table->double('discounted_price', 10, 2)->default(0);
             $table->integer('discount_percentage')->default(0);

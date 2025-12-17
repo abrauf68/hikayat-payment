@@ -132,4 +132,16 @@ class DashboardController extends Controller
             return redirect()->back()->with('error', 'Something went wrong! Please try again later');
         }
     }
+
+    public function trash(Request $request)
+    {
+        try {
+            $deletedPayments = Payment::onlyTrashed()->get();
+            $deletedPurchases = Purchase::onlyTrashed()->get();
+            return view('dashboard.trash.index', compact('deletedPayments', 'deletedPurchases'));
+        } catch (\Throwable $th) {
+            Log::error('Trash Page Failed', ['error' => $th->getMessage()]);
+            return redirect()->back()->with('error', 'Something went wrong! Please try again later');
+        }
+    }
 }

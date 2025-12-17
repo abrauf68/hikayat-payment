@@ -4,7 +4,6 @@
 
 @section('css')
     <style>
-
         .dashboard-header {
             display: flex;
             justify-content: space-between;
@@ -624,6 +623,16 @@
                         </div>
                     </div>
 
+                    {{-- <div class="form-row"> --}}
+                        <div class="form-group">
+                            <label for="quantity">Quantity<span class="text-danger">*</span></label>
+                            <input type="number" id="quantity" name="quantity" min="1" placeholder="i.e. 2" required>
+                            @error('quantity')
+                                <div class="error-message">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    {{-- </div> --}}
+
                     <div class="price-row">
                         <div class="form-group">
                             <label for="original_price">Original Price (PKR)<span class="text-danger">*</span></label>
@@ -805,6 +814,7 @@
                             <tr>
                                 <th>Variant</th>
                                 <th>Client</th>
+                                <th>Qty</th>
                                 <th>Original Price</th>
                                 <th>Discounted Price</th>
                                 <th>Status</th>
@@ -818,6 +828,7 @@
                                 <tr>
                                     <td><strong>{{ $purchase->variant_name }}</strong></td>
                                     <td>{{ $purchase->client_name }}</td>
+                                    <td>{{ $purchase->quantity }}</td>
                                     <td>{{ \App\Helpers\Helper::formatCurrency($purchase->original_price) }}</td>
                                     <td>{{ \App\Helpers\Helper::formatCurrency($purchase->discounted_price) }}
                                         <span class="discount-badge">{{ $purchase->discount_percentage }}% off</span>
@@ -832,6 +843,7 @@
                                             <button class="edit-btn" data-id="{{ $purchase->id }}"
                                                 data-variant="{{ $purchase->variant_name }}"
                                                 data-client="{{ $purchase->client_name }}"
+                                                data-quantity="{{ $purchase->quantity }}"
                                                 data-original="{{ $purchase->original_price }}"
                                                 data-discounted="{{ $purchase->discounted_price }}"
                                                 data-status="{{ $purchase->payment_status }}"
@@ -895,6 +907,15 @@
                                     <div class="error-message">{{ $message }}</div>
                                 @enderror
                             </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="quantity_edit">Quantity<span class="text-danger">*</span></label>
+                            <input type="number" min="1" id="quantity_edit" name="quantity_edit"
+                                placeholder="i.e. 2" required>
+                            @error('quantity_edit')
+                                <div class="error-message">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="price-row">
@@ -1076,6 +1097,7 @@
             document.getElementById('original_price_edit').value = btn.dataset.original;
             document.getElementById('discounted_price_edit').value = btn.dataset.discounted;
             document.getElementById('purchase_date_edit').value = btn.dataset.purchase;
+            document.getElementById('quantity_edit').value = btn.dataset.quantity;
             paymentDateInputEdit.value = btn.dataset.payment || '';
 
             const currentStatus = btn.dataset.status; // paid | unpaid

@@ -90,6 +90,13 @@ class Helper
         }
     }
 
+    public static function trashCount()
+    {
+        $paymentTrashCount = \App\Models\Payment::onlyTrashed()->count();
+        $purchaseTrashCount = \App\Models\Purchase::onlyTrashed()->count();
+        return $paymentTrashCount + $purchaseTrashCount;
+    }
+
     private static function renderRecaptchaV3($formId, $action)
     {
         $siteKey = config('captcha.sitekey');

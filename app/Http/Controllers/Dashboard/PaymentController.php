@@ -118,4 +118,34 @@ class PaymentController extends Controller
             'total'   => $hikayat + $self
         ]);
     }
+
+    public function deletePaymentPermanently($id)
+    {
+        try {
+            $payment = Payment::withTrashed()->find($id);
+            if (!$payment) {
+                return redirect()->back()->with('error', 'Payment not found');
+            }
+            $payment->forceDelete();
+            return redirect()->back()->with('success', 'Payment Permanently Deleted Successfully');
+        } catch (\Throwable $th) {
+            Log::error('Payment Permanent Delete Failed', ['error' => $th->getMessage()]);
+            return redirect()->back()->with('error', "Something went wrong! Please try again later");
+        }
+    }
+
+    public function restorePayment($id)
+    {
+        try {
+            $payment = Payment::withTrashed()->find($id);
+            if (!$payment) {
+                return redirect()->back()->with('error', 'Payment not found');
+            }
+            $payment->restore();
+            return redirect()->back()->with('success', 'Payment Restored Successfully');
+        } catch (\Throwable $th) {
+            Log::error('Payment Restore Failed', ['error' => $th->getMessage()]);
+            return redirect()->back()->with('error', "Something went wrong! Please try again later");
+        }
+    }
 }

@@ -48,12 +48,19 @@ Route::middleware(['auth'])->group(function () {
     Route::get('payment-terminal', [PaymentController::class, 'index'])->name('payment-terminal');
     Route::post('payment/store', [PaymentController::class, 'storePayment'])->name('payment.store');
     Route::delete('payment/delete/{id}', [PaymentController::class, 'deletePayment'])->name('payment.destroy');
+    Route::delete('payment/delete/permanent/{id}', [PaymentController::class, 'deletePaymentPermanently'])->name('payment.permanent-destroy');
+    Route::get('payment/restore/{id}', [PaymentController::class, 'restorePayment'])->name('payment.restore');
 
     //Purchase Routes
     Route::get('purchase-terminal', [PurchaseController::class, 'index'])->name('purchase-terminal');
     Route::post('purchase/store', [PurchaseController::class, 'storePurchase'])->name('purchase.store');
     Route::delete('purchase/delete/{id}', [PurchaseController::class, 'deletePurchase'])->name('purchase.destroy');
     Route::put('purchase/update/{id}', [PurchaseController::class, 'updatePurchase'])->name('purchase.update');
+    Route::delete('purchase/delete/permanent/{id}', [PurchaseController::class, 'deletePurchasePermanently'])->name('purchase.permanent-destroy');
+    Route::get('purchase/restore/{id}', [PurchaseController::class, 'restorePurchase'])->name('purchase.restore');
+
+    //Trash Routes
+    Route::get('trash', [DashboardController::class, 'trash'])->name('trash');
 });
 
 // Frontend Pages Routes
