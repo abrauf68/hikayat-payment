@@ -470,6 +470,12 @@
             .section-title {
                 font-size: 1.2rem;
             }
+
+            .modal-box {
+                width: 400px !important;
+                height: 100%;
+                overflow: auto;
+            }
         }
 
         @media (max-width: 480px) {
