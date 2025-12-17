@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Purchases Terminal')
+@section('title', 'Purchases')
 
 @section('css')
     <style>
