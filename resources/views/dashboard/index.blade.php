@@ -219,67 +219,69 @@
         });
     </script>
     <script>
-    const paymentBySource = @json($paymentBySource);
-    const ctxpie = document.getElementById('paymentChart').getContext('2d');
+        const paymentBySource = @json($paymentBySource);
+        const ctxpie = document.getElementById('paymentChart').getContext('2d');
 
-    let currentType = 'all';
+        let currentType = 'all';
 
-    const chartConfig = {
-        type: 'pie',
-        data: {
-            labels: ['Hikayat', 'Self'],
-            datasets: [{
-                label: 'Payments',
-                data: [
-                    paymentBySource[currentType].hikayat,
-                    paymentBySource[currentType].self
-                ],
-                backgroundColor: [
-                    'rgba(52, 152, 219, 0.8)', // Blue for Hikayat
-                    'rgba(46, 204, 113, 0.8)'  // Green for Self
-                ],
-                borderColor: [
-                    'rgba(52, 152, 219, 1)',
-                    'rgba(46, 204, 113, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { position: 'bottom' },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            let label = context.label || '';
-                            let value = context.parsed;
-                            let total = context.chart._metasets[context.datasetIndex].total;
-                            let percent = ((value / total) * 100).toFixed(1);
-                            return `${label}: ${value} (${percent}%)`;
+        const chartConfig = {
+            type: 'pie',
+            data: {
+                labels: ['Hikayat', 'Self'],
+                datasets: [{
+                    label: 'Payments',
+                    data: [
+                        paymentBySource[currentType].hikayat,
+                        paymentBySource[currentType].self
+                    ],
+                    backgroundColor: [
+                        'rgba(52, 152, 219, 0.8)', // Blue for Hikayat
+                        'rgba(46, 204, 113, 0.8)' // Green for Self
+                    ],
+                    borderColor: [
+                        'rgba(52, 152, 219, 1)',
+                        'rgba(46, 204, 113, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                let value = context.parsed;
+                                let total = context.chart._metasets[context.datasetIndex].total;
+                                let percent = ((value / total) * 100).toFixed(1);
+                                return `${label}: ${value} (${percent}%)`;
+                            }
                         }
                     }
                 }
             }
-        }
-    };
+        };
 
-    const paymentChart = new Chart(ctxpie, chartConfig);
+        const paymentChart = new Chart(ctxpie, chartConfig);
 
-    // ===== Toggle Buttons =====
-    document.querySelectorAll('.chart-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.chart-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+        // ===== Toggle Buttons =====
+        document.querySelectorAll('.chart-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.chart-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
 
-            currentType = btn.dataset.type;
+                currentType = btn.dataset.type;
 
-            paymentChart.data.datasets[0].data = [
-                paymentBySource[currentType].hikayat,
-                paymentBySource[currentType].self
-            ];
-            paymentChart.update();
+                paymentChart.data.datasets[0].data = [
+                    paymentBySource[currentType].hikayat,
+                    paymentBySource[currentType].self
+                ];
+                paymentChart.update();
+            });
         });
-    });
-</script>
+    </script>
 @endsection

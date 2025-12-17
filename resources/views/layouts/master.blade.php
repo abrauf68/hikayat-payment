@@ -334,6 +334,9 @@
         .chart-container {
             height: 300px;
             position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         /* Recent Activities */
@@ -545,6 +548,12 @@
 
             .main-content {
                 padding: 15px;
+            }
+
+            .nav-left {
+                display: flex;
+                justify-content: center;
+                gap: 15px;
             }
         }
 
@@ -834,6 +843,7 @@
             overlay.classList.toggle('active');
         }
 
+        menuToggle.addEventListener('click', toggleSidebar);
         // 👉 CALL THE FUNCTION AFTER PAGE LOAD
         document.addEventListener('DOMContentLoaded', updateCurrentDate);
     </script>

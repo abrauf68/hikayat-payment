@@ -149,6 +149,9 @@
                 flex-direction: column;
                 gap: 10px;
             }
+            .container {
+                max-width: 380px;
+            }
         }
 
         .paid-by-option {

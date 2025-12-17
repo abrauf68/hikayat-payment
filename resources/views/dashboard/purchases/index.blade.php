@@ -478,6 +478,9 @@
             .section-title {
                 font-size: 1.2rem;
             }
+            .container {
+                max-width: 380px;
+            }
         }
 
         @media (max-width: 480px) {
