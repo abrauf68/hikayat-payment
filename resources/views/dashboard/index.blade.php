@@ -18,7 +18,7 @@
                 <p>Total Revenue</p>
                 <div class="stat-change positive">
                     <i class="fas fa-arrow-up"></i>
-                    <span>12.5% from last month</span>
+                    <span>{{ number_format(abs($revenueChange), 1) }}% from last month</span>
                 </div>
             </div>
         </div>
@@ -32,7 +32,7 @@
                 <p>Paid Payments</p>
                 <div class="stat-change positive">
                     <i class="fas fa-arrow-up"></i>
-                    <span>8.2% from last month</span>
+                    <span>{{ number_format(abs($paidChange), 1) }}% from last month</span>
                 </div>
             </div>
         </div>
@@ -46,7 +46,7 @@
                 <p>Pending Payments</p>
                 <div class="stat-change negative">
                     <i class="fas fa-arrow-down"></i>
-                    <span>3.1% from last month</span>
+                    <span>{{ number_format(abs($unpaidChange), 1) }}% from last month</span>
                 </div>
             </div>
         </div>
@@ -56,11 +56,11 @@
                 <i class="fas fa-shopping-cart"></i>
             </div>
             <div class="stat-info">
-                <h3 id="totalPurchases">{{ \App\Helpers\Helper::formatCurrency($totalPurchases) }}</h3>
+                <h3 id="totalPurchases">{{ $totalPurchases }}</h3>
                 <p>Total Purchases</p>
                 <div class="stat-change positive">
                     <i class="fas fa-arrow-up"></i>
-                    <span>15.7% from last month</span>
+                    <span>{{ number_format(abs($purchaseChange), 1) }}% from last month</span>
                 </div>
             </div>
         </div>
@@ -78,17 +78,13 @@
                 </div>
             </div>
             <div class="chart-container">
-                <div class="chart-placeholder">
-                    <i class="fas fa-chart-line"></i>
-                    <p>Revenue chart will be displayed here</p>
-                    <small>Integrated with payment and purchase data</small>
-                </div>
+                <canvas id="revenueChart" height="250"></canvas>
             </div>
         </div>
 
         <div class="chart-card">
             <div class="chart-header">
-                <h3>Payment Status</h3>
+                <h3>Payment Distribution</h3>
                 <div class="chart-actions">
                     <button class="chart-btn active" data-type="all">All</button>
                     <button class="chart-btn" data-type="hikayat">Hikayat</button>
@@ -96,11 +92,7 @@
                 </div>
             </div>
             <div class="chart-container">
-                <div class="chart-placeholder">
-                    <i class="fas fa-chart-pie"></i>
-                    <p>Payment distribution chart</p>
-                    <small>Showing paid vs unpaid status</small>
-                </div>
+                <canvas id="paymentChart" height="250"></canvas>
             </div>
         </div>
     </div>
@@ -119,21 +111,25 @@
 
     <!-- Quick Actions -->
     <div class="quick-actions">
-        <div class="action-card payment" id="quickPayment">
-            <div class="action-icon">
-                <i class="fas fa-plus-circle"></i>
+        <a href="{{ route('payment-terminal') }}">
+            <div class="action-card payment" id="quickPayment">
+                <div class="action-icon">
+                    <i class="fas fa-plus-circle"></i>
+                </div>
+                <h3>Add Payment</h3>
+                <p>Record a new payment in the tracker</p>
             </div>
-            <h3>Add Payment</h3>
-            <p>Record a new payment in the tracker</p>
-        </div>
+        </a>
 
-        <div class="action-card purchase" id="quickPurchase">
-            <div class="action-icon">
-                <i class="fas fa-cart-plus"></i>
+        <a href="{{ route('purchase-terminal') }}">
+            <div class="action-card purchase" id="quickPurchase">
+                <div class="action-icon">
+                    <i class="fas fa-cart-plus"></i>
+                </div>
+                <h3>Add Purchase</h3>
+                <p>Add a new purchase record for tracking</p>
             </div>
-            <h3>Add Purchase</h3>
-            <p>Add a new purchase record</p>
-        </div>
+        </a>
 
         <div class="action-card report" id="quickReport">
             <div class="action-icon">
@@ -154,5 +150,136 @@
 @endsection
 
 @section('script')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('revenueChart').getContext('2d');
 
+        const chartData = {
+            month: {
+                labels: @json($monthLabels),
+                data: @json($monthlyRevenue)
+            },
+            quarter: {
+                labels: @json($quarterLabels),
+                data: @json($quarterRevenue)
+            },
+            year: {
+                labels: @json($yearLabels),
+                data: @json($yearlyRevenue)
+            }
+        };
+
+        let currentPeriod = 'month';
+
+        const revenueChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: chartData[currentPeriod].labels,
+                datasets: [{
+                    label: 'Revenue',
+                    data: chartData[currentPeriod].data,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // ===== Toggle Chart Period =====
+        document.querySelectorAll('.chart-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.chart-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                currentPeriod = btn.dataset.period;
+
+                revenueChart.data.labels = chartData[currentPeriod].labels;
+                revenueChart.data.datasets[0].data = chartData[currentPeriod].data;
+                revenueChart.update();
+            });
+        });
+    </script>
+    <script>
+    const paymentBySource = @json($paymentBySource);
+    const ctxpie = document.getElementById('paymentChart').getContext('2d');
+
+    let currentType = 'all';
+
+    const chartConfig = {
+        type: 'pie',
+        data: {
+            labels: ['Hikayat', 'Self'],
+            datasets: [{
+                label: 'Payments',
+                data: [
+                    paymentBySource[currentType].hikayat,
+                    paymentBySource[currentType].self
+                ],
+                backgroundColor: [
+                    'rgba(52, 152, 219, 0.8)', // Blue for Hikayat
+                    'rgba(46, 204, 113, 0.8)'  // Green for Self
+                ],
+                borderColor: [
+                    'rgba(52, 152, 219, 1)',
+                    'rgba(46, 204, 113, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom' },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            let value = context.parsed;
+                            let total = context.chart._metasets[context.datasetIndex].total;
+                            let percent = ((value / total) * 100).toFixed(1);
+                            return `${label}: ${value} (${percent}%)`;
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    const paymentChart = new Chart(ctxpie, chartConfig);
+
+    // ===== Toggle Buttons =====
+    document.querySelectorAll('.chart-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.chart-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            currentType = btn.dataset.type;
+
+            paymentChart.data.datasets[0].data = [
+                paymentBySource[currentType].hikayat,
+                paymentBySource[currentType].self
+            ];
+            paymentChart.update();
+        });
+    });
+</script>
 @endsection

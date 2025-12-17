@@ -280,7 +280,7 @@
         /* Charts Section */
         .charts-section {
             display: grid;
-            grid-template-columns: 2fr 1fr;
+            grid-template-columns: 1.5fr 1fr;
             gap: 20px;
             margin-bottom: 30px;
         }
@@ -644,7 +644,7 @@
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <h2><i class="fas fa-chart-line"></i> Hikayat</h2>
+            <h2><i class="fas fa-chart-line"></i> HIKAYAT</h2>
         </div>
 
         <div class="sidebar-menu">
@@ -739,7 +739,6 @@
         <!-- Footer -->
         <div class="dashboard-footer">
             <p>Hikayat Perfumes © {{ date('Y') }} | All data is securely stored and managed</p>
-            <p style="margin-top: 5px;"><i class="fas fa-rupee-sign"></i> All amounts in Pakistani Rupees (PKR)</p>
         </div>
     </div>
 

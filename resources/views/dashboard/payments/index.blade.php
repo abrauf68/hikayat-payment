@@ -268,6 +268,23 @@
             background: linear-gradient(135deg, #e76f51 0%, #e63946 100%);
         }
 
+        /* PROFIT */
+        .profitable {
+            background: linear-gradient(135deg, #2ecc71 0%, #1e8449 100%);
+            color: #fff;
+        }
+
+        /* LOSS */
+        .loss {
+            background: linear-gradient(135deg, #e63946 0%, #6a040f 100%);
+            color: #fff;
+        }
+
+        .total-amount{
+            background: linear-gradient(135deg, #457b9d 0%, #1d3557 100%);
+        }
+
+
         .month-selector {
             display: flex;
             flex-wrap: wrap;
@@ -596,12 +613,26 @@
                         <h3><i class="fas fa-user"></i> Self Account</h3>
                         <div class="amount" id="selfTotal">{{ \App\Helpers\Helper::formatCurrency($paymentBySelf) }}</div>
                     </div>
+
+                    <div class="account-summary total-amount">
+                        <h3><i class="fas fa-calculator"></i> Combined Total</h3>
+                        <div class="amount" id="selfTotal">{{ \App\Helpers\Helper::formatCurrency($totalPayment) }}</div>
+                    </div>
+
+                    @php
+                        $totalProfit = $paymentByHikayat - $paymentBySelf;
+                    @endphp
+
+                    <div class="account-summary {{ $totalProfit >= 0 ? 'profitable' : 'loss' }}">
+                        <h3><i class="fas fa-sack-dollar"></i> Profit</h3>
+                        <div class="amount" id="selfTotal">{{ \App\Helpers\Helper::formatCurrency($totalProfit) }}</div>
+                    </div>
                 </div>
 
-                <div class="total-section">
+                {{-- <div class="total-section">
                     <h3><i class="fas fa-calculator"></i> Combined Total</h3>
                     <div class="amount" id="combinedTotal">{{ \App\Helpers\Helper::formatCurrency($totalPayment) }}</div>
-                </div>
+                </div> --}}
             </div>
 
         </div>
