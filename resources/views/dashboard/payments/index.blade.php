@@ -521,7 +521,7 @@
         @php
             $totalProfit = $paymentByHikayat - $paymentBySelf;
         @endphp
-        @if ($totalProfit < 0)
+        {{-- @if ($totalProfit < 0)
             <div
                 style="
                         width: 100%;
@@ -551,7 +551,7 @@
                     ">
                 <i class="fas fa-check-circle"></i> Company is profitable.
             </div>
-        @endif
+        @endif --}}
 
 
         <div class="main-content-payment">
