@@ -474,6 +474,7 @@
             .modal-box {
                 width: 400px !important;
                 height: 100%;
+                margin: 10 !important;
                 overflow: auto;
             }
         }
@@ -572,7 +573,7 @@
         .modal-box {
             background: #fff;
             width: 450px;
-            margin: 10%;
+            margin: 10% auto;
             padding: 20px;
             border-radius: 6px;
             position: relative;
