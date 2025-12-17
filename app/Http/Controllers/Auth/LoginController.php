@@ -16,7 +16,7 @@ class LoginController extends Controller
     public function login()
     {
         if (Auth::check()) {
-            return redirect()->route('payment-terminal');
+            return redirect()->route('dashboard');
         } else {
             return view('auth.login');
         }
@@ -57,7 +57,7 @@ class LoginController extends Controller
                     Auth::attempt(['email' => $userfind->email, 'password' => $request->password], $remember_me);
 
                     if (Auth::check()) {
-                        return redirect()->route('payment-terminal')->with('success', "Login successfully!");
+                        return redirect()->route('dashboard')->with('success', "Login successfully!");
                     } else {
                         return redirect()->back()->withInput($request->all())->with('error', 'Authentication Error');
                     }

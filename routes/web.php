@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\PaymentController;
+use App\Http\Controllers\Dashboard\PurchaseController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,10 +23,10 @@ use Illuminate\Support\Facades\Artisan;
 
 Auth::routes();
 Route::get('/', function () {
-    return redirect()->route('payment-terminal');
+    return redirect()->route('dashboard');
 });
 Route::get('/home', function () {
-    return redirect()->route('payment-terminal');
+    return redirect()->route('dashboard');
 });
 // Guest Routes
 Route::group(['middleware' => ['guest']], function () {
@@ -40,10 +42,18 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    //Payment Routes
     Route::get('/payment-summary', [PaymentController::class, 'summary'])->name('payment.summary');
     Route::get('payment-terminal', [PaymentController::class, 'index'])->name('payment-terminal');
     Route::post('payment/store', [PaymentController::class, 'storePayment'])->name('payment.store');
     Route::delete('payment/delete/{id}', [PaymentController::class, 'deletePayment'])->name('payment.destroy');
+
+    //Purchase Routes
+    Route::get('purchase-terminal', [PurchaseController::class, 'index'])->name('purchase-terminal');
+    Route::post('purchase/store', [PurchaseController::class, 'storePurchase'])->name('purchase.store');
+    Route::delete('purchase/delete/{id}', [PurchaseController::class, 'deletePurchase'])->name('purchase.destroy');
+    Route::put('purchase/update/{id}', [PurchaseController::class, 'updatePurchase'])->name('purchase.update');
 });
 
 // Frontend Pages Routes

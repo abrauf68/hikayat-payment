@@ -3,27 +3,7 @@
 @section('title', 'Payment Terminal')
 
 @section('css')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        a {
-            text-decoration: none;
-        }
-
-        body {
-            background-color: #f5f7fa;
-            color: #333;
-            padding: 15px;
-            min-height: 100vh;
-        }
-
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -78,19 +58,6 @@
             font-size: 0.85rem;
         }
 
-        /* LOGOUT */
-        .logout-btn {
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        .logout-btn:hover {
-            opacity: 0.85;
-        }
-
         /* MOBILE */
         @media (max-width: 768px) {
             .dashboard-header {
@@ -105,7 +72,7 @@
         }
 
 
-        .main-content {
+        .main-content-payment {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 25px;
@@ -113,7 +80,7 @@
         }
 
         @media (max-width: 992px) {
-            .main-content {
+            .main-content-payment {
                 grid-template-columns: 1fr;
                 gap: 20px;
             }
@@ -207,26 +174,6 @@
             border-color: #2a9d8f;
             background-color: #e9f7f5;
             color: #2a9d8f;
-        }
-
-        .custom-btn {
-            padding: 14px 24px;
-            background-color: #2a9d8f;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .custom-btn:hover {
-            background-color: #238276;
         }
 
         .btn-add {
@@ -375,26 +322,6 @@
             transition: background-color 0.3s;
         }
 
-        .delete-btn2 {
-            padding: 14px 24px;
-            background-color: #e63946;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .me-2 {
-            margin-left: 8px;
-        }
-
         .delete-btn:hover {
             background-color: #c1121f;
         }
@@ -428,15 +355,6 @@
         .total-section p {
             font-size: 0.9rem;
             opacity: 0.9;
-        }
-
-        footer {
-            margin-top: 30px;
-            text-align: center;
-            color: #7f8c8d;
-            font-size: 0.85rem;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
         }
 
         /* Mobile-specific adjustments */
@@ -585,24 +503,10 @@
                 <h1><i class="fas fa-receipt"></i> Payment Tracker</h1>
                 <p>Track your product payments by Hikayat Account and Self Account with monthly subtotals</p>
             </div>
-
-            <div class="header-right">
-                {{-- <div class="profile-wrapper">
-                    <i class="fas fa-user-circle profile-icon"></i>
-                    <span class="profile-name">{{ Auth::user()->name }}</span>
-                </div> --}}
-
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="logout-btn" title="Logout">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </button>
-                </form>
-            </div>
         </header>
 
 
-        <div class="main-content">
+        <div class="main-content-payment">
             <div class="form-section">
                 <form action="{{ route('payment.store') }}" method="POST">
                     @csrf
@@ -760,50 +664,10 @@
                 @endif
             </div>
         </div>
-
-        <footer>
-            <p>Payment Tracker &copy; 2025 | Design & Developed by Bull Coders.</p>
-        </footer>
     </div>
 @endsection
 
 @section('script')
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        $(document).on('click', '.delete_confirmation', function(event) {
-            event.preventDefault();
-
-            let form = $(this).closest('form');
-
-            Swal.fire({
-                title: "{{ __('Are you sure?') }}",
-                text: "{{ __('You would not be able to revert this!') }}",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: "{{ __('Yes, delete it!') }}",
-                cancelButtonText: "{{ __('Cancel') }}",
-                reverseButtons: true,
-                customClass: {
-                    confirmButton: 'delete-btn2 me-2',
-                    cancelButton: 'custom-btn'
-                },
-                buttonsStyling: false
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    Swal.fire({
-                        title: "{{ __('Your data is safe!') }}",
-                        icon: 'info',
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
-                }
-            });
-        });
-    </script>
-
     <script>
         const paidByOptions = document.querySelectorAll('.paid-by-option');
         const paidByInput = document.getElementById('paid_by');
@@ -875,5 +739,4 @@
             window.location.href = "{{ route('payment-terminal') }}";
         });
     </script>
-
 @endsection
