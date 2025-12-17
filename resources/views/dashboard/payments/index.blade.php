@@ -624,7 +624,7 @@
                     @endphp
 
                     <div class="account-summary {{ $totalProfit >= 0 ? 'profitable' : 'loss' }}">
-                        <h3><i class="fas fa-sack-dollar"></i> Profit</h3>
+                        <h3><i class="fas fa-sack-dollar"></i> {{ $totalProfit >= 0 ? 'Profit' : 'Loss' }}</h3>
                         <div class="amount" id="selfTotal">{{ \App\Helpers\Helper::formatCurrency($totalProfit) }}</div>
                     </div>
                 </div>
