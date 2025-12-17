@@ -572,7 +572,7 @@
         .modal-box {
             background: #fff;
             width: 450px;
-            margin: 10% auto;
+            margin: 10%;
             padding: 20px;
             border-radius: 6px;
             position: relative;
