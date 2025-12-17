@@ -280,7 +280,7 @@
             color: #fff;
         }
 
-        .total-amount{
+        .total-amount {
             background: linear-gradient(135deg, #457b9d 0%, #1d3557 100%);
         }
 
@@ -522,6 +522,41 @@
             </div>
         </header>
 
+        @php
+            $totalProfit = $paymentByHikayat - $paymentBySelf;
+        @endphp
+        @if ($totalProfit < 0)
+            <div
+                style="
+                        width: 100%;
+                        background-color: #ffcccc; /* light red */
+                        color: #a70000; /* dark red text */
+                        padding: 15px;
+                        text-align: center;
+                        font-size: 18px;
+                        font-weight: bold;
+                        border-radius: 5px;
+                        margin-bottom: 20px;
+                    ">
+                <i class="fas fa-exclamation-triangle"></i> Aby Furqan company Loss main ha kuch kr yrrr!
+            </div>
+        @else
+            <div
+                style="
+                        width: 100%;
+                        background-color: #d4edda; /* light green */
+                        color: #155724; /* dark green text */
+                        padding: 15px;
+                        text-align: center;
+                        font-size: 18px;
+                        font-weight: bold;
+                        border-radius: 5px;
+                        margin-bottom: 20px;
+                    ">
+                <i class="fas fa-check-circle"></i> Company is profitable.
+            </div>
+        @endif
+
 
         <div class="main-content-payment">
             <div class="form-section">
@@ -618,10 +653,6 @@
                         <h3><i class="fas fa-calculator"></i> Combined Total</h3>
                         <div class="amount" id="selfTotal">{{ \App\Helpers\Helper::formatCurrency($totalPayment) }}</div>
                     </div>
-
-                    @php
-                        $totalProfit = $paymentByHikayat - $paymentBySelf;
-                    @endphp
 
                     <div class="account-summary {{ $totalProfit >= 0 ? 'profitable' : 'loss' }}">
                         <h3><i class="fas fa-sack-dollar"></i> {{ $totalProfit >= 0 ? 'Profit' : 'Loss' }}</h3>
