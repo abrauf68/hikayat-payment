@@ -451,15 +451,6 @@
             font-weight: 700;
         }
 
-        footer {
-            margin-top: 30px;
-            text-align: center;
-            color: #7f8c8d;
-            font-size: 0.85rem;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-        }
-
         /* Mobile-specific adjustments */
         @media (max-width: 768px) {
             body {
@@ -971,12 +962,6 @@
                 </form>
             </div>
         </div>
-
-
-
-        <footer>
-            <p>Purchase Management System &copy; 2025 | Design & Developed by Bull Coders.</p>
-        </footer>
     </div>
 @endsection
 
