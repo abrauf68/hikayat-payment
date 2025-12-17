@@ -4,10 +4,6 @@
 
 @section('css')
     <style>
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
 
         .dashboard-header {
             display: flex;
@@ -477,9 +473,6 @@
 
             .section-title {
                 font-size: 1.2rem;
-            }
-            .container {
-                max-width: 380px;
             }
         }
 

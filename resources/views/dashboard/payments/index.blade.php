@@ -4,10 +4,6 @@
 
 @section('css')
     <style>
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
 
         .dashboard-header {
             display: flex;
@@ -148,9 +144,6 @@
             .paid-by-options {
                 flex-direction: column;
                 gap: 10px;
-            }
-            .container {
-                max-width: 380px;
             }
         }
 

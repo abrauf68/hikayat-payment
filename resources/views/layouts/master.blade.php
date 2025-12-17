@@ -817,9 +817,9 @@
         function updateCurrentDate() {
             const now = new Date();
             const options = {
-                weekday: 'long',
+                weekday: 'short',
                 year: 'numeric',
-                month: 'long',
+                month: 'short',
                 day: 'numeric'
             };
             currentDateElement.textContent = now.toLocaleDateString('en-PK', options);
