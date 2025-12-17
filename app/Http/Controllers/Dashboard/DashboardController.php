@@ -64,8 +64,8 @@ class DashboardController extends Controller
             for ($i = 11; $i >= 0; $i--) {
                 $date = Carbon::now()->subMonths($i);
                 $monthLabels[] = $date->format('M Y'); // Jan 2025
-                $monthlyRevenue[] = Purchase::whereMonth('created_at', $date->month)
-                                            ->whereYear('created_at', $date->year)
+                $monthlyRevenue[] = Purchase::whereMonth('purchase_date', $date->month)
+                                            ->whereYear('purchase_date', $date->year)
                                             ->sum('discounted_price');
             }
 
@@ -75,7 +75,7 @@ class DashboardController extends Controller
             for ($i = 4; $i >= 0; $i--) {
                 $year = Carbon::now()->subYears($i)->year;
                 $yearLabels[] = $year;
-                $yearlyRevenue[] = Purchase::whereYear('created_at', $year)
+                $yearlyRevenue[] = Purchase::whereYear('purchase_date', $year)
                                             ->sum('discounted_price');
             }
 
@@ -86,7 +86,7 @@ class DashboardController extends Controller
                 $quarterStart = Carbon::now()->subQuarters($i)->firstOfQuarter();
                 $quarterEnd = Carbon::now()->subQuarters($i)->lastOfQuarter();
                 $quarterLabels[] = 'Q' . $quarterStart->quarter . ' ' . $quarterStart->year;
-                $quarterRevenue[] = Purchase::whereBetween('created_at', [$quarterStart, $quarterEnd])
+                $quarterRevenue[] = Purchase::whereBetween('purchase_date', [$quarterStart, $quarterEnd])
                                             ->sum('discounted_price');
             }
 
