@@ -372,10 +372,6 @@
 
         /* Mobile-specific adjustments */
         @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-
             header {
                 padding: 15px 10px;
                 margin-bottom: 20px;
@@ -473,11 +469,6 @@
             .delete-btn,
             .month-selector {
                 display: none !important;
-            }
-
-            body {
-                background: white;
-                padding: 0;
             }
 
             .container {

@@ -38,6 +38,8 @@
             color: var(--dark);
             min-height: 100vh;
             display: flex;
+            margin: 0;
+            padding: 0;
         }
 
         /* LOGOUT */
