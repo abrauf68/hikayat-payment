@@ -548,6 +548,7 @@
 
             .main-content {
                 padding: 15px;
+                overflow-x: hidden;
             }
 
             .nav-left {
@@ -657,6 +658,7 @@
         </div>
 
         <div class="sidebar-menu">
+
             <a href="{{ route('dashboard') }}" class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 <i class="fas fa-home"></i>
                 <span>Dashboard</span>
@@ -686,23 +688,6 @@
                 <span>Reports</span>
                 <span class="notification-badge">3</span>
             </a>
-
-            <a href="#" class="menu-item">
-                <i class="fas fa-users"></i>
-                <span>Clients</span>
-            </a>
-
-            <div class="menu-divider"></div>
-
-            <a href="#" class="menu-item">
-                <i class="fas fa-cog"></i>
-                <span>Settings</span>
-            </a>
-
-            <a href="#" class="menu-item">
-                <i class="fas fa-question-circle"></i>
-                <span>Help & Support</span>
-            </a>
         </div>
     </div>
 
@@ -714,24 +699,25 @@
         <!-- Top Navigation -->
         <div class="top-nav">
             <div class="nav-left">
-                <button class="menu-toggle" id="menuToggle">
-                    <i class="fas fa-bars"></i>
-                </button>
                 <h1><i class="fas fa-tachometer-alt"></i> @yield('title')</h1>
             </div>
 
             <div class="nav-right">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+
                 <div class="date-display">
                     <i class="fas fa-calendar-alt"></i>
                     <span id="currentDate">Loading...</span>
                 </div>
 
-                <div class="user-profile">
+                {{-- <div class="user-profile">
                     <div class="user-avatar">
                         <span>{{ strtoupper(substr(Auth::user()->name, 0, 2)) }}</span>
                     </div>
                     <div class="user-name">{{ Auth::user()->name }}</div>
-                </div>
+                </div> --}}
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
@@ -844,7 +830,14 @@
         }
 
         menuToggle.addEventListener('click', toggleSidebar);
-        // 👉 CALL THE FUNCTION AFTER PAGE LOAD
+
+        overlay.addEventListener('click', () => {
+            if (sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', updateCurrentDate);
     </script>
 
