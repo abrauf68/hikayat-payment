@@ -98,7 +98,7 @@
     </div>
 
     <!-- Recent Activities -->
-    <div class="recent-activities">
+    {{-- <div class="recent-activities">
         <div class="activities-header">
             <h3>Recent Activities</h3>
             <button class="chart-btn">View All</button>
@@ -107,7 +107,7 @@
         <div class="activities-list" id="activitiesList">
             <!-- Activities will be populated by JavaScript -->
         </div>
-    </div>
+    </div> --}}
 
     <!-- Quick Actions -->
     <div class="quick-actions">
