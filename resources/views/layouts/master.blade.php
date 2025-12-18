@@ -688,10 +688,10 @@
                 <span class="notification-badge">{{ \App\Helpers\Helper::trashCount() }}</span>
             </a>
 
-            <a href="#" class="menu-item">
+            {{-- <a href="#" class="menu-item">
                 <i class="fas fa-chart-bar"></i>
                 <span>Analytics</span>
-            </a>
+            </a> --}}
 
             <a href="#" class="menu-item">
                 <i class="fas fa-file-invoice-dollar"></i>

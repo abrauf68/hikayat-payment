@@ -139,13 +139,13 @@
             <p>Create monthly financial report</p>
         </div>
 
-        <div class="action-card settings" id="quickSettings">
+        {{-- <div class="action-card settings" id="quickSettings">
             <div class="action-icon">
                 <i class="fas fa-sliders-h"></i>
             </div>
             <h3>Settings</h3>
             <p>Configure dashboard preferences</p>
-        </div>
+        </div> --}}
     </div>
 @endsection
 
