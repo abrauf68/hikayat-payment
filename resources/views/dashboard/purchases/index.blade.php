@@ -567,12 +567,13 @@
             inset: 0;
             background: rgba(0, 0, 0, .5);
             z-index: 9999;
+            overflow-y: auto;
         }
 
         .modal-box {
             background: #fff;
             width: 450px;
-            margin: 10% auto;
+            margin: 3% auto;
             padding: 20px;
             border-radius: 6px;
             position: relative;
